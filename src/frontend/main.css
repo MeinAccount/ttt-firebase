@@ -1,0 +1,47 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100vh;
+}
+
+h1 {
+  margin: 10px 0;
+  text-align: center;
+
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+
+  font-size: 3em;
+  font-weight: 900;
+  font-family: 'Roboto', sans-serif;
+}
+
+table {
+  margin: 0 auto;
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+td {
+  border: 1px solid black;
+  width: 200px;
+  height: 200px;
+
+  opacity: 0;
+  transition: .5s opacity cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+td.Cross {
+  background-image: url('Cross.svg');
+  opacity: 1;
+}
+td.Circle {
+  background-image: url('Circle.svg');
+  opacity: 1;
+}
