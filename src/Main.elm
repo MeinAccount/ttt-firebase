@@ -68,7 +68,7 @@ viewState model attr =
 
 viewModel : Model -> Html Msg
 viewModel model =
-    table []
+    table [ classList [ ( "done", isDone model.state ) ] ]
         [ viewRow model.state model.top (\new -> { model | top = new })
         , viewRow model.state model.center (\new -> { model | center = new })
         , viewRow model.state model.bottom (\new -> { model | bottom = new })
@@ -92,7 +92,7 @@ viewCell : GameState -> Maybe Player -> Msg -> Html Msg
 viewCell state val msg =
     case val of
         Just player ->
-            td [ class <| toString player ] []
+            td [ class (toString player) ] []
 
         Nothing ->
             case state of

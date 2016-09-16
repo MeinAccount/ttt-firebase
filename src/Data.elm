@@ -26,6 +26,16 @@ type GameState
     | Draw
 
 
+isDone : GameState -> Bool
+isDone state =
+    case state of
+        Ongoing _ ->
+            False
+
+        _ ->
+            True
+
+
 
 -- ROW
 
