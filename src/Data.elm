@@ -64,6 +64,6 @@ type alias Model =
     }
 
 
-model : Model
-model =
+emptyModel : Model
+emptyModel =
     Model emptyRow emptyRow emptyRow (Ongoing Cross)
