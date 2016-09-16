@@ -53,7 +53,7 @@ view model =
         ]
 
 
-viewState : Model -> List (Html.Attribute Msg) -> Html Msg
+viewState : Model -> List (Attribute Msg) -> Html Msg
 viewState model attr =
     case model.state of
         Ongoing player ->
@@ -78,6 +78,7 @@ viewModel model =
 viewRow : GameState -> Row -> (Row -> Model) -> Html Msg
 viewRow state row update =
     let
+        -- this should really use lenses!
         cell val update =
             viewCell state val (Click update)
     in
