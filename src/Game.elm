@@ -1,42 +1,18 @@
 module Game exposing (..)
 
-
-type Player
-    = Cross
-    | Circle
+import Data exposing (..)
 
 
-nextPlayer : Player -> Player
-nextPlayer player =
-    case player of
-        Cross ->
-            Circle
+updateClick : (Maybe Player -> Model) -> Model -> Model
+updateClick update model =
+    case model.state of
+        Ongoing player ->
+            procedeState player <| update <| Just player
 
-        Circle ->
-            Cross
-
-
-
--- GAME STATE
+        _ ->
+            model
 
 
-type GameState
-    = Ongoing
-    | Won
-    | Draw
-
-
-
--- ROW
-
-
-type alias Row =
-    { left : Maybe Player
-    , middle : Maybe Player
-    , right : Maybe Player
-    }
-
-
-emptyRow : Row
-emptyRow =
-    Row Nothing Nothing Nothing
+procedeState : Player -> Model -> Model
+procedeState currentPlayer model =
+    { model | state = Ongoing (nextPlayer currentPlayer) }

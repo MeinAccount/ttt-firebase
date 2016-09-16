@@ -4,6 +4,7 @@ import Html exposing (..)
 import Html.App as App
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onDoubleClick)
+import Data exposing (..)
 import Game exposing (..)
 
 
@@ -13,24 +14,6 @@ main =
         , view = view
         , update = update
         }
-
-
-
--- MODEL
-
-
-type alias Model =
-    { top : Row
-    , center : Row
-    , bottom : Row
-    , state : GameState
-    , player : Player
-    }
-
-
-model : Model
-model =
-    Model emptyRow emptyRow emptyRow Ongoing Cross
 
 
 
@@ -46,19 +29,14 @@ update : Msg -> Model -> Model
 update msg model =
     case msg of
         Click update ->
-            let
-                newModel =
-                    update <| Just model.player
-            in
-                { newModel | player = nextPlayer model.player }
+            updateClick update model
 
         Start ->
             { model
                 | top = emptyRow
                 , center = emptyRow
                 , bottom = emptyRow
-                , state = Ongoing
-                , player = Cross
+                , state = Ongoing Cross
             }
 
 
@@ -70,7 +48,7 @@ view : Model -> Html Msg
 view model =
     div []
         [ viewState model [ onDoubleClick Start ]
-        , viewTable model
+        , viewModel model
           -- , input [ type' "password", placeholder "Password", onInput Password ] []
         ]
 
@@ -78,18 +56,18 @@ view model =
 viewState : Model -> List (Html.Attribute Msg) -> Html Msg
 viewState model attr =
     case model.state of
-        Ongoing ->
-            h1 attr [ text <| "Next player: " ++ toString model.player ]
+        Ongoing player ->
+            h1 attr [ text <| "Next player: " ++ toString player ]
 
-        Won ->
-            h1 attr [ text <| "Won: " ++ toString model.player ]
+        Won player ->
+            h1 attr [ text <| "Won: " ++ toString player ]
 
         Draw ->
             h1 attr [ text "Draw" ]
 
 
-viewTable : Model -> Html Msg
-viewTable model =
+viewModel : Model -> Html Msg
+viewModel model =
     table []
         [ viewRow model.top (\new -> { model | top = new })
         , viewRow model.center (\new -> { model | center = new })
