@@ -69,26 +69,35 @@ viewState model attr =
 viewModel : Model -> Html Msg
 viewModel model =
     table []
-        [ viewRow model.top (\new -> { model | top = new })
-        , viewRow model.center (\new -> { model | center = new })
-        , viewRow model.bottom (\new -> { model | bottom = new })
+        [ viewRow model.state model.top (\new -> { model | top = new })
+        , viewRow model.state model.center (\new -> { model | center = new })
+        , viewRow model.state model.bottom (\new -> { model | bottom = new })
         ]
 
 
-viewRow : Row -> (Row -> Model) -> Html Msg
-viewRow row update =
-    tr []
-        [ viewCell row.left <| Click (\new -> update { row | left = new })
-        , viewCell row.middle <| Click (\new -> update { row | middle = new })
-        , viewCell row.right <| Click (\new -> update { row | right = new })
-        ]
+viewRow : GameState -> Row -> (Row -> Model) -> Html Msg
+viewRow state row update =
+    let
+        cell val update =
+            viewCell state val (Click update)
+    in
+        tr []
+            [ cell row.left (\new -> update { row | left = new })
+            , cell row.middle (\new -> update { row | middle = new })
+            , cell row.right (\new -> update { row | right = new })
+            ]
 
 
-viewCell : Maybe Player -> Msg -> Html Msg
-viewCell val msg =
+viewCell : GameState -> Maybe Player -> Msg -> Html Msg
+viewCell state val msg =
     case val of
-        Nothing ->
-            td [ onClick msg, style [ ( "cursor", "pointer" ) ] ] []
-
         Just player ->
             td [ class <| toString player ] []
+
+        Nothing ->
+            case state of
+                Ongoing _ ->
+                    td [ onClick msg, style [ ( "cursor", "pointer" ) ] ] []
+
+                _ ->
+                    td [ onClick msg ] []
