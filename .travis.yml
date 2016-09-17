@@ -10,6 +10,10 @@ install:
 script:
 - elm make src/Main.elm --output src/frontend/Main.js
 
+after_success:
+- npm install firebase-tools
+- firebase deploy --token "$FIREBASE_TOKEN"
+
 cache:
   directories:
     - elm-stuff/build-artifacts
