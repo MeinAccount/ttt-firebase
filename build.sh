@@ -1,7 +1,8 @@
 #!/bin/sh
 set -e
 
-elm make src/Main.elm --output src/frontend/Main.js
+elm make src/Main.elm \
+  --output src/frontend/Main.js
 
 uglifyjs \
   src/frontend/Main.js \
