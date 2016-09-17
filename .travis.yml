@@ -2,6 +2,7 @@ language: node_js
 
 before_install:
 - npm install elm
+- elm package install -y
 
 script:
 - elm make src/Main.elm --output src/frontend/Main.js
