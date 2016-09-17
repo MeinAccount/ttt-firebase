@@ -10,9 +10,14 @@ install:
 script:
 - elm make src/Main.elm --output src/frontend/Main.js
 
-after_success:
+before_deploy:
 - npm install firebase-tools
-- firebase deploy --token "$FIREBASE_TOKEN" --non-interactive
+
+deploy:
+  provider: script
+  script: firebase deploy --token "$FIREBASE_TOKEN" --non-interactive
+  on:
+    branch: master
 
 cache:
   directories:
