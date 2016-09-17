@@ -15,14 +15,15 @@
       <div style="font-size: 1em">With new projects, I need a bunch of extra time to download packages.</div>
     </div>
 
-    <script type="text/javascript" src="/_compile/src/Main.elm"></script>
-    <script type="text/javascript">
+    <script src="/_compile/src/Main.elm"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.4.0/firebase.js"></script>
+    <script>
       while (document.body.firstChild) {
         document.body.removeChild(document.body.firstChild);
       }
 
       var app = runElmProgram();
     </script>
-    <script type="text/javascript" src="/src/frontend/native.js"></script>
+    <script src="/src/frontend/native.js"></script>
   </body>
 </html>
