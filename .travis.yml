@@ -12,8 +12,8 @@ script:
 
 after_success:
 - npm install firebase-tools
-- firebase deploy --token "$FIREBASE_TOKEN"
+- firebase deploy --token "$FIREBASE_TOKEN" --non-interactive
 
 cache:
   directories:
-    - elm-stuff/build-artifacts
+    - elm-stuff
