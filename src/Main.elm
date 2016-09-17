@@ -1,4 +1,4 @@
-module Main exposing (..)
+port module Main exposing (..)
 
 import Html exposing (..)
 import Html.App as App
@@ -10,16 +10,26 @@ import Game exposing (..)
 
 main =
     App.program
-        { init = ( emptyModel, Cmd.none )
+        { init = ( emptyModel, bindClick True )
         , view = view
         , update = update
         , subscriptions = subscriptions
         }
 
 
+
+-- GENERATED CONTENT EVENTS
+
+
+port bindClick : Bool -> Cmd msg
+
+
+port clickOverlay : (Bool -> msg) -> Sub msg
+
+
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.none
+    clickOverlay (always Start)
 
 
 
@@ -44,7 +54,7 @@ update msg model =
                 , bottom = emptyRow
                 , state = Ongoing Cross
               }
-            , Cmd.none
+            , bindClick True
             )
 
 
@@ -76,7 +86,7 @@ viewState model attr =
 
 viewModel : Model -> Html Msg
 viewModel model =
-    table [ classList [ ( "done", isDone model.state ) ] ]
+    table [ id "ttt", classList [ ( "done", isDone model.state ) ] ]
         [ viewRow model.state model.top (\new -> { model | top = new })
         , viewRow model.state model.center (\new -> { model | center = new })
         , viewRow model.state model.bottom (\new -> { model | bottom = new })
