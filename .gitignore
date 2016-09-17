@@ -5,3 +5,5 @@
 elm-stuff/
 src/frontend/Main.js
 
+# minified files
+src/public/bundle*

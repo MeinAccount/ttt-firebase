@@ -2,13 +2,15 @@ sudo: false
 language: node_js
 
 before_install:
-  - npm install elm
+  - npm install elm uglify-js uglifycss
 
 install:
   - elm package install -y
 
 script:
   - elm make src/Main.elm --output src/frontend/Main.js
+  - uglifyjs src/frontend/Main.js src/frontend/init.js src/frontend/native.js --compress warnings=false --no-mangle > src/public/bundle.js
+  - uglifycss src/frontend/main.css > src/public/bundle.css
 
 before_deploy:
   - npm install firebase-tools

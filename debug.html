@@ -22,19 +22,7 @@
       }
 
       var app = runElmProgram();
-      if (app !== undefined) {
-        app.ports.bindClick.subscribe(function() {
-          var listener = function(event) {
-            if (event.target.nodeName === 'TABLE') {
-              app.ports.clickOverlay.send(true);
-            }
-          };
-
-          setTimeout(function() {
-            document.querySelector('#ttt').addEventListener('dblclick', listener);
-          }, 1000);
-        });
-      }
     </script>
+    <script type="text/javascript" src="/src/frontend/native.js"></script>
   </body>
 </html>
