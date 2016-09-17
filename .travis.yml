@@ -2,20 +2,21 @@ sudo: false
 language: node_js
 
 before_install:
-- npm install elm
+  - npm install elm
 
 install:
-- elm package install -y
+  - elm package install -y
 
 script:
-- elm make src/Main.elm --output src/frontend/Main.js
+  - elm make src/Main.elm --output src/frontend/Main.js
 
 before_deploy:
-- npm install firebase-tools
+  - npm install firebase-tools
 
 deploy:
   provider: script
-  script: firebase deploy --token "$FIREBASE_TOKEN" --non-interactive
+  script:
+    - firebase deploy --token "$FIREBASE_TOKEN" --non-interactive
   on:
     branch: master
 
