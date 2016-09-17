@@ -10,7 +10,7 @@ import Game exposing (..)
 
 main =
     App.program
-        { init = ( emptyModel, bindClick True )
+        { init = emptyModel ! [ bindClick True ]
         , view = view
         , update = update
         , subscriptions = subscriptions
@@ -45,17 +45,16 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Click update ->
-            ( updateClick update model, Cmd.none )
+            updateClick update model ! [ Cmd.none ]
 
         Start ->
-            ( { model
+            { model
                 | top = emptyRow
                 , center = emptyRow
                 , bottom = emptyRow
                 , state = Ongoing Cross
-              }
-            , bindClick True
-            )
+            }
+                ! [ bindClick True ]
 
 
 
