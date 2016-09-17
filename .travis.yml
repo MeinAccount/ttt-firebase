@@ -6,3 +6,7 @@ before_install:
 
 script:
 - elm make src/Main.elm --output src/frontend/Main.js
+
+cache:
+  directories:
+    - elm-stuff/build-artifacts
