@@ -90,7 +90,7 @@ view model =
         , main' []
             [ div []
                 [ viewState model.table ResetGame
-                , viewModel model.table ClickCell
+                , viewTable model.table ClickCell
                 ]
             ]
           -- , input [ type' "password", placeholder "Password", onInput Password ] []

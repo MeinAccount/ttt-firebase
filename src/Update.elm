@@ -3,7 +3,7 @@ module Update exposing (..)
 import Game exposing (..)
 
 
-updateClick : (Maybe Player -> Model) -> Model -> Model
+updateClick : (Maybe Player -> Table) -> Table -> Table
 updateClick update model =
     case model.state of
         Ongoing player ->
@@ -13,7 +13,7 @@ updateClick update model =
             model
 
 
-procedeState : Player -> Model -> Model
+procedeState : Player -> Table -> Table
 procedeState currentPlayer model =
     case getWinner model of
         Just winner ->
@@ -30,7 +30,7 @@ procedeState currentPlayer model =
 -- DETERMINING WINNERS
 
 
-getWinner : Model -> Maybe Player
+getWinner : Table -> Maybe Player
 getWinner model =
     Maybe.oneOf
         [ getWinnerRow model.top
@@ -48,12 +48,12 @@ getWinnerRow row =
     findWinner row.left row.middle row.right
 
 
-getWinnerColumn : Model -> (Row -> Maybe Player) -> Maybe Player
+getWinnerColumn : Table -> (Row -> Maybe Player) -> Maybe Player
 getWinnerColumn model access =
     findWinner (access model.top) (access model.center) (access model.bottom)
 
 
-getWinnerDiagonal : Model -> Maybe Player
+getWinnerDiagonal : Table -> Maybe Player
 getWinnerDiagonal model =
     Maybe.oneOf
         [ findWinner model.top.left model.center.middle model.bottom.right
@@ -78,7 +78,7 @@ findWinner a b c =
 -- DETECTING DRAWS
 
 
-isDraw : Model -> Bool
+isDraw : Table -> Bool
 isDraw model =
     isRowFull model.top && isRowFull model.center && isRowFull model.bottom
 

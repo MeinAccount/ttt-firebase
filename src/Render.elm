@@ -27,8 +27,8 @@ type alias Click =
     Maybe Player -> Table
 
 
-viewModel : Table -> (Click -> msg) -> Html msg
-viewModel model handler =
+viewTable : Table -> (Click -> msg) -> Html msg
+viewTable model handler =
     let
         clickable =
             not (isDone model.state)
