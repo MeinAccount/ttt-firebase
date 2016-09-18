@@ -1,4 +1,4 @@
-body > div {
+#my-app, #debug > div {
   display: flex;
 }
 
