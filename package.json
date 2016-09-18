@@ -1,0 +1,16 @@
+{
+  "name": "ttt-firebase",
+  "title": "Tic Tac Toe on Firebase",
+  "version": "1.0.0",
+  "author": "Magnus Kühn",
+  "homepage": "https://github.com/MeinAccount/ttt-firebase",
+  "dependencies": {
+    "del": "^2.2.2",
+    "elm": "^0.17.1",
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^2.0.12",
+    "gulp-concat": "^2.6.0",
+    "gulp-htmlmin": "^2.0.0",
+    "gulp-uglify": "^2.0.0"
+  }
+}

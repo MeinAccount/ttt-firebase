@@ -2,13 +2,13 @@ sudo: false
 language: node_js
 
 before_install:
-  - npm install elm uglify-js uglifycss minimize
+  - npm install
 
 install:
   - elm package install -y
 
 script:
-  - ./build.sh
+  - gulp dist
 
 before_deploy:
   - npm install firebase-tools
@@ -24,3 +24,4 @@ deploy:
 cache:
   directories:
     - elm-stuff
+    - node_modules

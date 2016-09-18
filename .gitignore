@@ -3,8 +3,11 @@
 
 # elm
 elm-stuff/
-src/frontend/Main.js
+src/public/Main.js
 
-# minified files
-src/public/bundle*
-src/public/index.html
+# dist
+dist
+
+# npm
+node_modules
+npm-debug.log*
