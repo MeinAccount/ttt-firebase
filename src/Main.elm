@@ -2,6 +2,8 @@ port module Main exposing (..)
 
 import Html exposing (..)
 import Html.App as App
+import Html.Attributes exposing (..)
+import Auth exposing (..)
 import Game exposing (..)
 import Render exposing (..)
 import Update exposing (..)
@@ -28,7 +30,25 @@ port clickOverlay : (Bool -> msg) -> Sub msg
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    clickOverlay (always Start)
+    Sub.batch
+        [ clickOverlay (always ResetGame)
+        , currentUser SetUser
+        ]
+
+
+
+-- MODEL
+
+
+type alias Model =
+    { table : Table
+    , user : Maybe User
+    }
+
+
+emptyModel : Model
+emptyModel =
+    Model emptyTable Nothing
 
 
 
@@ -36,23 +56,26 @@ subscriptions model =
 
 
 type Msg
-    = Click (Maybe Player -> Model)
-    | Start
+    = ClickCell (Maybe Player -> Table)
+    | AuthAction AuthMsg
+    | SetUser (Maybe User)
+    | ResetGame
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Click update ->
-            updateClick update model ! [ Cmd.none ]
+        ClickCell update ->
+            { model | table = updateClick update model.table } ! []
 
-        Start ->
-            { model
-                | top = emptyRow
-                , center = emptyRow
-                , bottom = emptyRow
-                , state = Ongoing Cross
-            }
+        AuthAction msg ->
+            model ! [ authMsg (toString msg) ]
+
+        SetUser user ->
+            { model | user = user } ! []
+
+        ResetGame ->
+            { model | table = emptyTable }
                 ! [ bindClick True ]
 
 
@@ -63,7 +86,12 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div []
-        [ viewState model Start
-        , viewModel model Click
+        [ viewAuth model.user AuthAction
+        , main' []
+            [ div []
+                [ viewState model.table ResetGame
+                , viewModel model.table ClickCell
+                ]
+            ]
           -- , input [ type' "password", placeholder "Password", onInput Password ] []
         ]

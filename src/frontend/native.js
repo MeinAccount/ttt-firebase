@@ -8,6 +8,21 @@ var config = {
 };
 firebase.initializeApp(config);
 
+// auth
+app.ports.authMsg.subscribe(function(action) {
+  switch (action) {
+    case 'SignInGoogle':
+      firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
+      break;
+    default:
+      firebase.auth().signOut();
+  }
+});
+
+firebase.auth().onAuthStateChanged(function(user) {
+  app.ports.currentUser.send(user);
+});
+
 // generated content events
 app.ports.bindClick.subscribe(function() {
   var listener = function(event) {

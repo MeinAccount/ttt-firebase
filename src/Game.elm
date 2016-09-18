@@ -56,7 +56,7 @@ emptyRow =
 -- TABLE
 
 
-type alias Model =
+type alias Table =
     { top : Row
     , center : Row
     , bottom : Row
@@ -64,6 +64,6 @@ type alias Model =
     }
 
 
-emptyModel : Model
-emptyModel =
-    Model emptyRow emptyRow emptyRow (Ongoing Cross)
+emptyTable : Table
+emptyTable =
+    Table emptyRow emptyRow emptyRow (Ongoing Cross)

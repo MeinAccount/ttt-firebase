@@ -6,7 +6,7 @@ import Html.Events exposing (onClick, onDoubleClick)
 import Game exposing (..)
 
 
-viewState : Model -> msg -> Html msg
+viewState : Table -> msg -> Html msg
 viewState model handler =
     let
         attr =
@@ -24,10 +24,10 @@ viewState model handler =
 
 
 type alias Click =
-    Maybe Player -> Model
+    Maybe Player -> Table
 
 
-viewModel : Model -> (Click -> msg) -> Html msg
+viewModel : Table -> (Click -> msg) -> Html msg
 viewModel model handler =
     let
         clickable =
@@ -40,7 +40,7 @@ viewModel model handler =
             ]
 
 
-viewRow : Bool -> Row -> (Row -> Model) -> (Click -> msg) -> Html msg
+viewRow : Bool -> Row -> (Row -> Table) -> (Click -> msg) -> Html msg
 viewRow clickable row update handler =
     let
         -- this should really use lenses!

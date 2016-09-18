@@ -1,13 +1,32 @@
-* {
-  margin: 0;
-  padding: 0;
+body > div {
+  display: flex;
 }
 
-body {
+aside {
+  min-width: 30%;
+  margin-right: 20px;
+  padding: 20px;
+
+  background-color: #E0E0E0;
+  height: calc(100vh - 40px);
+  overflow-y: auto;
+}
+
+aside .mdl-button--colored {
+  width: 100%;
+}
+
+aside h2 {
+  text-align: center;
+}
+
+main {
   height: 100vh;
+  overflow-y: scroll;
+  flex: 1;
 }
 
-h1 {
+main h1 {
   margin: .2em 0 1em;
   text-align: center;
 
@@ -16,10 +35,6 @@ h1 {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-
-  font-size: 3em;
-  font-weight: 900;
-  font-family: 'Roboto', sans-serif;
 }
 
 table {
