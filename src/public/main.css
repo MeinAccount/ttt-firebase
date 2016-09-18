@@ -1,4 +1,4 @@
-#my-app, #debug > div {
+#my-app > div, #debug > div {
   display: flex;
 }
 
@@ -22,7 +22,7 @@ aside h2 {
 
 main {
   height: 100vh;
-  overflow-y: scroll;
+  overflow-y: auto;
   flex: 1;
 }
 
