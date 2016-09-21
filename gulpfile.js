@@ -86,5 +86,7 @@ gulp.task('debug', ['copy', 'fonts', 'sass'], function() {
     port: 8001,
     cors: '*'
   });
-  server.start(() => console.log('Static server listening on ', server.port));
+  server.start(function() {
+    console.log('Static server listening on ', server.port)
+  });
 });
