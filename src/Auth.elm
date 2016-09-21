@@ -25,7 +25,7 @@ port currentUser : (Maybe User -> msg) -> Sub msg
 viewAuth : Maybe User -> (AuthMsg -> msg) -> Html msg
 viewAuth val handler =
     aside []
-        [ h2 [ class "display-2" ]
+        [ h4 [ class "center" ]
             [ text <| "Welcome " ++ Maybe.withDefault "Anonymus" (Maybe.map .displayName val) ]
         , case val of
             Just user ->
@@ -39,7 +39,7 @@ viewAuth val handler =
 viewLogin : msg -> Html msg
 viewLogin handler =
     div []
-        [ button [ onClick handler, class "mdl-button mdl-button--raised mdl-button--colored" ]
+        [ button [ onClick handler, class "btn" ]
             [ text "Sign In" ]
         ]
 
@@ -47,6 +47,6 @@ viewLogin handler =
 viewUser : User -> msg -> Html msg
 viewUser user handler =
     div []
-        [ button [ onClick handler, class "mdl-button mdl-button--raised mdl-button--colored" ]
+        [ button [ onClick handler, class "btn" ]
             [ text "Sign Out" ]
         ]

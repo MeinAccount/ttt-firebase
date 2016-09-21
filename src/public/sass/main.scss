@@ -4,68 +4,60 @@
   display: flex;
 }
 
+aside, main {
+  height: 100vh;
+  overflow-y: auto;
+}
+
 aside {
-  min-width: 30%;
+  min-width: 25%;
   margin-right: 20px;
   padding: 20px;
 
-  background-color: #E0E0E0;
-  height: calc(100vh - 40px);
-  overflow-y: auto;
-}
+  @extend .grey, .lighten-2;
 
-aside .mdl-button--colored {
-  width: 100%;
-}
-
-aside h2 {
-  text-align: center;
+  .btn {
+    width: 100%;
+  }
 }
 
 main {
-  height: 100vh;
-  overflow-y: auto;
   flex: 1;
-}
 
-main h1 {
-  margin: .2em 0 1em;
-  text-align: center;
-
-  cursor: pointer;
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
+  h1 {
+    cursor: pointer;
+    user-select: none;
+  }
 }
 
 table {
   margin: 0 auto;
   border-collapse: collapse;
+  width: auto;
 
   position: relative;
 	z-index: 100;
-}
 
-table:before {
-	content: '';
-	position: absolute;
-	left: -5%;
-	top: -5%;
-	width: 110%;
-	height: 110%;
-	background-color: black;
-	border-radius: 4px;
-	z-index: 1000;
+  &:before {
+  	content: '';
+  	position: absolute;
+  	left: -5%;
+  	top: -5%;
+  	width: 110%;
+  	height: 110%;
+  	background-color: black;
+  	border-radius: 4px;
+  	z-index: 1000;
 
-	pointer-events: none;
-	opacity: 0;
-	transition: opacity .5s cubic-bezier(0.4, 0, 0.2, 1);
-}
+  	pointer-events: none;
+  	opacity: 0;
+  	transition: opacity .5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
-table.done:before {
-	opacity: 0.7;
-	pointer-events: auto;
+  &.done:before {
+  	opacity: 0.7;
+  	pointer-events: auto;
+  }
 }
 
 td {

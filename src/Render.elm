@@ -10,7 +10,7 @@ viewState : Table -> msg -> Html msg
 viewState model handler =
     let
         attr =
-            [ onDoubleClick handler ]
+            [ onDoubleClick handler, class "center" ]
     in
         case model.state of
             Ongoing player ->
