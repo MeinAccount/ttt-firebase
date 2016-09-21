@@ -4,7 +4,8 @@ const exec = require('child_process').exec;
 
 const concat   = require('gulp-concat');
 const uglify   = require('gulp-uglify');
-const cleanCSS = require('gulp-clean-css');
+const sass     = require('gulp-sass');
+const sassFail = require('gulp-sass-error').gulpSassError;
 const htmlmin  = require('gulp-htmlmin');
 
 gulp.task('clean', function() {
@@ -37,12 +38,12 @@ gulp.task('js', ['elm'], function() {
 });
 
 
-gulp.task('css', function() {
-  return gulp.src('src/public/*.css')
-    .pipe(cleanCSS({
-      compatibility: 'ie8'
-    }))
-    .pipe(gulp.dest('dist'));
+gulp.task('sass', function () {
+ return gulp.src('src/public/main.scss')
+   .pipe(sass({
+     outputStyle: 'compressed'
+   }).on('error', sassFail(true)))
+   .pipe(gulp.dest('dist'));
 });
 
 gulp.task('html', function() {
@@ -54,4 +55,4 @@ gulp.task('html', function() {
 });
 
 
-gulp.task('dist', ['copy', 'js', 'css', 'html']);
+gulp.task('dist', ['copy', 'js', 'sass', 'html']);

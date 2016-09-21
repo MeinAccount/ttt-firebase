@@ -8,9 +8,11 @@
     "del": "^2.2.2",
     "elm": "^0.17.1",
     "gulp": "^3.9.1",
-    "gulp-clean-css": "^2.0.12",
     "gulp-concat": "^2.6.0",
     "gulp-htmlmin": "^2.0.0",
-    "gulp-uglify": "^2.0.0"
+    "gulp-sass": "^2.3.2",
+    "gulp-sass-error": "^1.0.2",
+    "gulp-uglify": "^2.0.0",
+    "materialize-css": "^0.97.7"
   }
 }
