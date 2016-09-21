@@ -20,6 +20,11 @@ gulp.task('copy', function() {
     .pipe(gulp.dest('dist/assets'));
 });
 
+gulp.task('fonts', function() {
+  return gulp.src('node_modules/materialize-css/fonts/**/*')
+    .pipe(gulp.dest('dist/fonts'));
+});
+
 
 gulp.task('elm', function(cb) {
   const cmd = 'elm make src/Main.elm --output src/public/Main.js';
@@ -39,12 +44,22 @@ gulp.task('js', ['elm'], function() {
 
 
 gulp.task('sass', function () {
- return gulp.src('src/public/main.scss')
+ return gulp.src('src/public/sass/main.scss')
    .pipe(sass({
      outputStyle: 'compressed'
    }).on('error', sassFail(true)))
-   .pipe(gulp.dest('dist'));
+   .pipe(gulp.dest('dist/css'));
 });
+
+gulp.task('sass:debug', function() {
+  const sourcemaps = require('gulp-sourcemaps');
+  return gulp.src('src/public/sass/main.scss')
+    .pipe(sourcemaps.init())
+    .pipe(sass().on('error', sass.logError))
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('dist/css'));
+});
+
 
 gulp.task('html', function() {
   return gulp.src('src/public/*.html')
@@ -54,5 +69,26 @@ gulp.task('html', function() {
     .pipe(gulp.dest('dist'))
 });
 
+gulp.task('dist', ['copy', 'fonts', 'js', 'sass', 'html']);
 
-gulp.task('dist', ['copy', 'js', 'sass', 'html']);
+
+gulp.task('debug', ['copy', 'fonts', 'sass:debug'], function() {
+  gulp.watch('src/public/assets/*', ['copy']);
+  gulp.watch('src/public/sass/*.scss', ['sass:debug']);
+
+  // launch reactor
+  const exec = require('child_process').exec;
+  const reactor = exec('elm-reactor');
+  reactor.stdout.pipe(process.stdout);
+  reactor.stderr.pipe(process.stdout);
+
+  // launch static server
+  // TODO: remove once reactor can serve fonts
+  const staticServer = require('static-server');
+  const server = new staticServer({
+    rootPath: 'dist',
+    port: 8001,
+    cors: '*'
+  });
+  server.start(() => console.log('Static server listening on ', server.port));
+});

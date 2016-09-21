@@ -14,5 +14,9 @@
     "gulp-sass-error": "^1.0.2",
     "gulp-uglify": "^2.0.0",
     "materialize-css": "^0.97.7"
+  },
+  "devDependencies": {
+    "gulp-sourcemaps": "^1.6.0",
+    "static-server": "^2.0.3"
   }
 }
