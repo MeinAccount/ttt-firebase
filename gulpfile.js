@@ -6,6 +6,7 @@ const concat   = require('gulp-concat');
 const uglify   = require('gulp-uglify');
 const cleanCSS = require('gulp-clean-css');
 const htmlmin  = require('gulp-htmlmin');
+const hashSrc  = require('gulp-hash-src');
 
 gulp.task('clean', function() {
   return del([
@@ -37,18 +38,26 @@ gulp.task('js', ['elm'], function() {
 });
 
 
-gulp.task('css', function() {
+gulp.task('css', ['copy'], function() {
   return gulp.src('src/public/*.css')
     .pipe(cleanCSS({
       compatibility: 'ie8'
     }))
+    .pipe(hashSrc({
+      build_dir: 'dist',
+      src_path: 'src/public'
+    }))
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('html', function() {
+gulp.task('html', ['copy', 'js', 'css'], function() {
   return gulp.src('src/public/*.html')
     .pipe(htmlmin({
       collapseWhitespace: true
+    }))
+    .pipe(hashSrc({
+      build_dir: 'dist',
+      src_path: 'src/public'
     }))
     .pipe(gulp.dest('dist'))
 });
