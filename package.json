@@ -8,15 +8,16 @@
     "del": "^2.2.2",
     "elm": "^0.17.1",
     "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
     "gulp-concat": "^2.6.0",
     "gulp-htmlmin": "^2.0.0",
     "gulp-sass": "^2.3.2",
     "gulp-sass-error": "^1.0.2",
+    "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^2.0.0",
     "materialize-css": "^0.97.7"
   },
   "devDependencies": {
-    "gulp-sourcemaps": "^1.6.0",
     "static-server": "^2.0.3"
   }
 }

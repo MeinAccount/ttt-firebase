@@ -2,11 +2,14 @@ const gulp = require('gulp');
 const del  = require('del');
 const exec = require('child_process').exec;
 
-const concat   = require('gulp-concat');
-const uglify   = require('gulp-uglify');
-const sass     = require('gulp-sass');
-const sassFail = require('gulp-sass-error').gulpSassError;
-const htmlmin  = require('gulp-htmlmin');
+const concat  = require('gulp-concat');
+const uglify  = require('gulp-uglify');
+const htmlmin = require('gulp-htmlmin');
+
+const sass       = require('gulp-sass');
+const sassFail   = require('gulp-sass-error').gulpSassError;
+const sourcemaps = require('gulp-sourcemaps');
+const prefixer   = require('gulp-autoprefixer');
 
 gulp.task('clean', function() {
   return del([
@@ -45,21 +48,14 @@ gulp.task('js', ['elm'], function() {
 
 gulp.task('sass', function () {
  return gulp.src('src/public/sass/main.scss')
-   .pipe(sass({
-     outputStyle: 'compressed'
-   }).on('error', sassFail(true)))
+   .pipe(sourcemaps.init())
+     .pipe(sass({
+       outputStyle: 'compressed'
+     }).on('error', sassFail(true)))
+     .pipe(prefixer())
+   .pipe(sourcemaps.write())
    .pipe(gulp.dest('dist/css'));
 });
-
-gulp.task('sass:debug', function() {
-  const sourcemaps = require('gulp-sourcemaps');
-  return gulp.src('src/public/sass/main.scss')
-    .pipe(sourcemaps.init())
-    .pipe(sass().on('error', sass.logError))
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest('dist/css'));
-});
-
 
 gulp.task('html', function() {
   return gulp.src('src/public/*.html')
@@ -69,12 +65,12 @@ gulp.task('html', function() {
     .pipe(gulp.dest('dist'))
 });
 
+
 gulp.task('dist', ['copy', 'fonts', 'js', 'sass', 'html']);
 
-
-gulp.task('debug', ['copy', 'fonts', 'sass:debug'], function() {
+gulp.task('debug', ['copy', 'fonts', 'sass'], function() {
   gulp.watch('src/public/assets/*', ['copy']);
-  gulp.watch('src/public/sass/*.scss', ['sass:debug']);
+  gulp.watch('src/public/sass/*.scss', ['sass']);
 
   // launch reactor
   const exec = require('child_process').exec;
