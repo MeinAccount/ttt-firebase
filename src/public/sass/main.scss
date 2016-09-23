@@ -15,10 +15,14 @@ aside {
   margin-right: 20px;
   padding: 20px;
 
-  @extend .grey, .lighten-2;
+  @extend .orange, .lighten-3;
 
   .btn {
     width: 100%;
+  }
+
+  .collection-item {
+    cursor: pointer;
   }
 }
 
