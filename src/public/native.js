@@ -36,9 +36,9 @@ firebase.auth().onAuthStateChanged(function(user) {
 });
 
 // storing state
-app.ports.storeTableRaw.subscribe(function(table) {
-  console.log(table);
-});
+// app.ports.storeTableRaw.subscribe(function(table) {
+//   console.log(table);
+// });
 
 // generated content events
 app.ports.bindClick.subscribe(function() {

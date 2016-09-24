@@ -1,14 +1,19 @@
 port module Main exposing (..)
 
+import Auth exposing (..)
+import Game exposing (..)
+import GameRender exposing (..)
+
+
+--import GameUpdate exposing (..)
+
 import Html exposing (..)
 import Html.App as App
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
-import Auth exposing (..)
-import Game exposing (..)
-import Render exposing (..)
-import Storage exposing (..)
-import Update exposing (..)
+
+
+--import Storage exposing (..)
 
 
 main =
@@ -48,8 +53,8 @@ type ActiveGame
 
 
 type alias Model =
-    { localMP : Table
-    , localAI : Table
+    { localMP : Game
+    , localAI : Game
     , user : Maybe User
     , activeGame : ActiveGame
     }
@@ -57,7 +62,7 @@ type alias Model =
 
 emptyModel : Model
 emptyModel =
-    Model emptyTable emptyTable Nothing LocalMP
+    Model newGame newGame Nothing LocalMP
 
 
 
@@ -65,20 +70,16 @@ emptyModel =
 
 
 type Msg
-    = ClickCell (Maybe Player -> Table)
-    | AuthAction AuthMsg
+    = AuthAction AuthMsg
     | SetUser (Maybe User)
     | SetActiveGame ActiveGame
+    | UpdateGame GameCoord
     | ResetGame
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        ClickCell update ->
-            updateTable (updateClick update) model
-                ! []
-
         AuthAction msg ->
             model ! [ authMsg (toString msg) ]
 
@@ -88,13 +89,17 @@ update msg model =
         SetActiveGame activeGame ->
             { model | activeGame = activeGame } ! []
 
+        UpdateGame coord ->
+            updateActiveGame (insertCoord coord) model
+                ! []
+
         ResetGame ->
-            updateTable (always emptyTable) model
+            updateActiveGame (always newGame) model
                 ! [ bindClick True ]
 
 
-getTable : Model -> Table
-getTable model =
+getActiveGame : Model -> Game
+getActiveGame model =
     case model.activeGame of
         LocalMP ->
             model.localMP
@@ -103,8 +108,8 @@ getTable model =
             model.localAI
 
 
-updateTable : (Table -> Table) -> Model -> Model
-updateTable update model =
+updateActiveGame : (Game -> Game) -> Model -> Model
+updateActiveGame update model =
     case model.activeGame of
         LocalMP ->
             { model | localMP = update model.localMP }
@@ -126,8 +131,8 @@ view model =
             , viewGameSelect model.activeGame
             ]
         , main' []
-            [ viewState (getTable model) ResetGame
-            , viewTable (getTable model) ClickCell
+            [ viewGameState (getActiveGame model) ResetGame
+            , viewGameBoard (getActiveGame model) UpdateGame
             ]
         ]
 
