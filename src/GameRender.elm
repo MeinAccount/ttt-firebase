@@ -28,7 +28,7 @@ viewGameBoard : Game -> (GameCoord -> msg) -> Html msg
 viewGameBoard game msg =
     let
         rows clickHandler =
-            List.map (viewGameRow game.coords clickHandler) [ 1, 2, 3 ]
+            List.map (viewGameRow game.coords clickHandler) [1..3]
     in
         case isDone game.state of
             False ->
@@ -46,7 +46,7 @@ viewGameRow coords clickHandler row =
                 Maybe.map viewPlayerCell <|
                     Dict.get ( row, column ) coords
     in
-        tr [] (List.map cell [ 1, 2, 3 ])
+        tr [] (List.map cell [1..3])
 
 
 viewPlayerCell : Player -> Html msg
