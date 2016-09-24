@@ -3,17 +3,10 @@ port module Main exposing (..)
 import Auth exposing (..)
 import Game exposing (..)
 import GameRender exposing (..)
-
-
---import GameUpdate exposing (..)
-
+import GameSelection exposing (..)
 import Html exposing (..)
 import Html.App as App
 import Html.Attributes exposing (..)
-import Html.Events exposing (onClick)
-
-
---import Storage exposing (..)
 
 
 main =
@@ -45,11 +38,6 @@ subscriptions model =
 
 
 -- MODEL
-
-
-type ActiveGame
-    = LocalMP
-    | LocalAI
 
 
 type alias Model =
@@ -128,27 +116,10 @@ view model =
         [ aside []
             [ viewUser model.user
             , viewAuth model.user AuthAction
-            , viewGameSelect model.activeGame
+            , viewGameSelect model.activeGame SetActiveGame
             ]
         , main' []
             [ viewGameState (getActiveGame model) ResetGame
             , viewGameBoard (getActiveGame model) UpdateGame
             ]
         ]
-
-
-viewGameSelect : ActiveGame -> Html Msg
-viewGameSelect activeGame =
-    let
-        attr game =
-            [ onClick (SetActiveGame game)
-            , classList
-                [ ( "collection-item", True )
-                , ( "active", activeGame == game )
-                ]
-            ]
-    in
-        div [ class "collection" ]
-            [ a (attr LocalMP) [ text "Lokal MP" ]
-            , a (attr LocalAI) [ text "Lokal AI" ]
-            ]
