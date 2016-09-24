@@ -6,7 +6,6 @@ import GameRender exposing (..)
 import GameSelection exposing (..)
 import Html exposing (..)
 import Html.App as App
-import Html.Attributes exposing (..)
 
 
 main =
