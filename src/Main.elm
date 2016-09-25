@@ -87,7 +87,7 @@ update msg model =
                   ]
 
         StoreLoad game ->
-            updateActiveGame (always game) model
+            { model | localMP = game }
                 ! [ bindClick True ]
 
         ResetGame ->
