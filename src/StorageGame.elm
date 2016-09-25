@@ -13,7 +13,6 @@ type alias GameStore =
     { user : Maybe User
     , coords : List GameCoordStore
     , nextPlayer : Maybe Bool
-    , won : Maybe Bool
     }
 
 
@@ -34,32 +33,27 @@ save user game =
     in
         case game.state of
             Ongoing player ->
-                saveGame <| GameStore user coords (Just <| player == Cross) Nothing
+                saveGame <| GameStore user coords (Just <| player == Cross)
 
-            Won player ->
-                saveGame <| GameStore user coords Nothing (Just <| player == Cross)
-
-            Draw ->
-                saveGame <| GameStore user coords Nothing Nothing
+            _ ->
+                saveGame <| GameStore user coords Nothing
 
 
 subscribe : (Game -> msg) -> Sub msg
 subscribe msg =
     let
-        toGame { coords, nextPlayer, won } =
+        toGame { coords, nextPlayer } =
             let
-                state =
-                    case ( nextPlayer, won ) of
-                        ( Just playerRaw, _ ) ->
-                            Ongoing (boolToPlayer playerRaw)
-
-                        ( _, Just winnerRaw ) ->
-                            Won (boolToPlayer winnerRaw)
-
-                        _ ->
-                            Draw
+                dict =
+                    (Dict.fromList <| List.map parseCoord coords)
             in
-                Game (Dict.fromList <| List.map parseCoord coords) state
+                case nextPlayer of
+                    Just playerRaw ->
+                        Game dict (Ongoing <| boolToPlayer playerRaw)
+
+                    _ ->
+                        updateState Cross <|
+                            Game dict Draw
     in
         updateGame (msg << toGame)
 

@@ -27,14 +27,11 @@ firebase.auth().onAuthStateChanged(function(user) {
     gameRef.on('value', function(snapshot) {
       console.log('retrieve', snapshot.val());
 
-      var values = snapshot.val() || {
-        nextPlayer: true
-      };
+      var values = snapshot.val() || {};
       app.ports.updateGame.send({
         user: values.user || null,
         coords: values.coords || [],
-        nextPlayer: values.nextPlayer !== undefined ? values.nextPlayer : null,
-        won: values.won !== undefined ? values.won : null
+        nextPlayer: values.nextPlayer !== undefined ? values.nextPlayer : null
       });
     });
   }

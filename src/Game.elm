@@ -8,6 +8,7 @@ module Game
         , Game
         , newGame
         , insertCoord
+        , updateState
         )
 
 import Dict exposing (Dict)
@@ -71,15 +72,15 @@ insertCoord : GameCoord -> Game -> Game
 insertCoord coord game =
     case game.state of
         Ongoing player ->
-            procedeState player <|
+            updateState player <|
                 { game | coords = Dict.insert coord player game.coords }
 
         _ ->
             game
 
 
-procedeState : Player -> Game -> Game
-procedeState player game =
+updateState : Player -> Game -> Game
+updateState player game =
     case getWinner game.coords of
         Just winner ->
             { game | state = Won winner }
