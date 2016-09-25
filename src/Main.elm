@@ -32,8 +32,8 @@ port clickOverlay : (Bool -> msg) -> Sub msg
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
-        [ clickOverlay (always ResetGame)
-        , currentUser SetUser
+        [ clickOverlay (always ActiveGameReset)
+        , currentUser AuthUser
         , Store.subscribe StoreLoad
         ]
 
@@ -61,11 +61,11 @@ emptyModel =
 
 type Msg
     = AuthAction AuthMsg
-    | SetUser (Maybe User)
-    | SetActiveGame ActiveGame
-    | UpdateGame GameCoord
+    | AuthUser (Maybe User)
+    | ActiveGameSelect ActiveGame
+    | ActiveGamePlace GameCoord
+    | ActiveGameReset
     | StoreLoad Game
-    | ResetGame
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -74,13 +74,13 @@ update msg model =
         AuthAction msg ->
             model ! [ authMsg (toString msg) ]
 
-        SetUser user ->
+        AuthUser user ->
             { model | user = user } ! []
 
-        SetActiveGame activeGame ->
+        ActiveGameSelect activeGame ->
             { model | activeGame = activeGame } ! []
 
-        UpdateGame coord ->
+        ActiveGamePlace coord ->
             let
                 game =
                     insertCoord coord <| getActiveGame model
@@ -97,16 +97,16 @@ update msg model =
                     LocalAI ->
                         { model | localAI = game } ! []
 
-        StoreLoad game ->
-            { model | localMP = game } ! [ bindClick True ]
-
-        ResetGame ->
+        ActiveGameReset ->
             case model.activeGame of
                 LocalMP ->
                     { model | localMP = newGame } ! [ bindClick True ]
 
                 LocalAI ->
                     { model | localAI = newGame } ! [ bindClick True ]
+
+        StoreLoad game ->
+            { model | localMP = game } ! [ bindClick True ]
 
 
 getActiveGame : Model -> Game
@@ -129,10 +129,10 @@ view model =
         [ aside []
             [ viewUser model.user
             , viewAuth model.user AuthAction
-            , viewGameSelect model.activeGame SetActiveGame
+            , viewGameSelect model.activeGame ActiveGameSelect
             ]
         , main' []
-            [ viewGameState (getActiveGame model) ResetGame
-            , viewGameBoard (getActiveGame model) UpdateGame
+            [ viewGameState (getActiveGame model) ActiveGameReset
+            , viewGameBoard (getActiveGame model) ActiveGamePlace
             ]
         ]
