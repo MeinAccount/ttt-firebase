@@ -1,4 +1,12 @@
-port module Auth exposing (..)
+port module Auth
+    exposing
+        ( AuthMsg
+        , User
+        , authMsg
+        , currentUser
+        , viewUser
+        , viewAuth
+        )
 
 import Html exposing (..)
 import Html.Attributes exposing (..)

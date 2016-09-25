@@ -1,4 +1,8 @@
-port module StorageGame exposing (save, subscribe)
+port module StorageGame
+    exposing
+        ( save
+        , subscribe
+        )
 
 import Auth exposing (..)
 import Dict exposing (Dict)

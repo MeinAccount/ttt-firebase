@@ -1,4 +1,8 @@
-module GameRender exposing (viewGameState, viewGameBoard)
+module GameRender
+    exposing
+        ( viewGameState
+        , viewGameBoard
+        )
 
 import Dict exposing (Dict)
 import Game exposing (..)

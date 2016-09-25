@@ -1,7 +1,6 @@
 port module Main exposing (..)
 
 import Auth exposing (..)
-import Dict exposing (Dict)
 import Game exposing (..)
 import GameRender exposing (..)
 import GameSelection exposing (..)
