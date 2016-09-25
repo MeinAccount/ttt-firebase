@@ -27,10 +27,12 @@ firebase.auth().onAuthStateChanged(function(user) {
     gameRef.on('value', function(snapshot) {
       console.log('retrieve', snapshot.val());
 
-      var values = snapshot.val();
+      var values = snapshot.val() || {
+        nextPlayer: true
+      };
       app.ports.updateGame.send({
-        user: values.user,
-        coords: values.coords,
+        user: values.user || null,
+        coords: values.coords || [],
         nextPlayer: values.nextPlayer !== undefined ? values.nextPlayer : null,
         won: values.won !== undefined ? values.won : null
       });
