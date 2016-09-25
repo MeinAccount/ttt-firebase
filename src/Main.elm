@@ -1,11 +1,13 @@
 port module Main exposing (..)
 
 import Auth exposing (..)
+import Dict exposing (Dict)
 import Game exposing (..)
 import GameRender exposing (..)
 import GameSelection exposing (..)
 import Html exposing (..)
 import Html.App as App
+import StorageGame as Store
 
 
 main =
@@ -32,6 +34,7 @@ subscriptions model =
     Sub.batch
         [ clickOverlay (always ResetGame)
         , currentUser SetUser
+        , Store.subscribe StoreLoad
         ]
 
 
@@ -61,6 +64,7 @@ type Msg
     | SetUser (Maybe User)
     | SetActiveGame ActiveGame
     | UpdateGame GameCoord
+    | StoreLoad Game
     | ResetGame
 
 
@@ -77,8 +81,14 @@ update msg model =
             { model | activeGame = activeGame } ! []
 
         UpdateGame coord ->
-            updateActiveGame (insertCoord coord) model
-                ! []
+            model
+                ! [ Store.save model.user
+                        (insertCoord coord <| getActiveGame model)
+                  ]
+
+        StoreLoad game ->
+            updateActiveGame (always game) model
+                ! [ bindClick True ]
 
         ResetGame ->
             updateActiveGame (always newGame) model

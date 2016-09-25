@@ -22,23 +22,28 @@ app.ports.authMsg.subscribe(function(action) {
 firebase.auth().onAuthStateChanged(function(user) {
   app.ports.currentUser.send(user);
 
-  // setup presence system
   if (user !== null) {
-    var amOnline = new Firebase('https://<demo>.firebaseio.com/.info/connected');
-    var userRef = new Firebase('https://<demo>.firebaseio.com/presence/' + userid);
-    amOnline.on('value', function(snapshot) {
-      if (snapshot.val()) {
-        userRef.onDisconnect().set(Firebase.ServerValue.TIMESTAMP);
-        userRef.set(true);
-      }
+    var gameRef = firebase.database().ref('private/'+user.uid);
+    gameRef.on('value', function(snapshot) {
+      console.log('retrieve', snapshot.val());
+
+      var values = snapshot.val();
+      app.ports.updateGame.send({
+        user: values.user,
+        coords: values.coords,
+        nextPlayer: values.nextPlayer !== undefined ? values.nextPlayer : null,
+        won: values.won !== undefined ? values.won : null
+      });
     });
   }
 });
 
 // storing state
-// app.ports.storeTableRaw.subscribe(function(table) {
-//   console.log(table);
-// });
+app.ports.saveGame.subscribe(function(data) {
+  if (data.user) {
+    firebase.database().ref('private/'+data.user.uid).set(data);
+  }
+});
 
 // generated content events
 app.ports.bindClick.subscribe(function() {
