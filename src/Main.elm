@@ -87,7 +87,12 @@ update msg model =
             in
                 case model.activeGame of
                     LocalMP ->
-                        model ! [ Store.save model.user game ]
+                        case model.user of
+                            Just user ->
+                                model ! [ Store.save user game ]
+
+                            Nothing ->
+                                { model | localMP = game } ! []
 
                     LocalAI ->
                         { model | localAI = game } ! []
