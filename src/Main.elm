@@ -81,18 +81,27 @@ update msg model =
             { model | activeGame = activeGame } ! []
 
         UpdateGame coord ->
-            model
-                ! [ Store.save model.user
-                        (insertCoord coord <| getActiveGame model)
-                  ]
+            let
+                game =
+                    insertCoord coord <| getActiveGame model
+            in
+                case model.activeGame of
+                    LocalMP ->
+                        model ! [ Store.save model.user game ]
+
+                    LocalAI ->
+                        { model | localAI = game } ! []
 
         StoreLoad game ->
-            { model | localMP = game }
-                ! [ bindClick True ]
+            { model | localMP = game } ! [ bindClick True ]
 
         ResetGame ->
-            updateActiveGame (always newGame) model
-                ! [ bindClick True ]
+            case model.activeGame of
+                LocalMP ->
+                    { model | localMP = newGame } ! [ bindClick True ]
+
+                LocalAI ->
+                    { model | localAI = newGame } ! [ bindClick True ]
 
 
 getActiveGame : Model -> Game
@@ -103,16 +112,6 @@ getActiveGame model =
 
         LocalAI ->
             model.localAI
-
-
-updateActiveGame : (Game -> Game) -> Model -> Model
-updateActiveGame update model =
-    case model.activeGame of
-        LocalMP ->
-            { model | localMP = update model.localMP }
-
-        LocalAI ->
-            { model | localAI = update model.localAI }
 
 
 
