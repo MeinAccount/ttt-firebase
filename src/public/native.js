@@ -25,8 +25,6 @@ firebase.auth().onAuthStateChanged(function(user) {
   if (user !== null) {
     var gameRef = firebase.database().ref('private/'+user.uid);
     gameRef.on('value', function(snapshot) {
-      console.log('retrieve', snapshot.val());
-
       var values = snapshot.val() || {};
       app.ports.updateGame.send({
         user: values.user || null,
