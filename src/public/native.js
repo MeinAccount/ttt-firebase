@@ -27,7 +27,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     gameRef.on('value', function(snapshot) {
       var values = snapshot.val() || {};
       app.ports.updateGame.send({
-        user: values.user || null,
+        uid: values.uid || user.uid,
         coords: values.coords || [],
         nextPlayer: values.nextPlayer !== undefined ? values.nextPlayer : null
       });
@@ -37,8 +37,8 @@ firebase.auth().onAuthStateChanged(function(user) {
 
 // storing state
 app.ports.saveGame.subscribe(function(data) {
-  if (data.user) {
-    firebase.database().ref('private/'+data.user.uid).set(data);
+  if (data.uid) {
+    firebase.database().ref('private/'+data.uid).set(data);
   }
 });
 

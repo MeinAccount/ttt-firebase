@@ -10,7 +10,7 @@ type alias GameCoordStore =
 
 
 type alias GameStore =
-    { user : Maybe User
+    { uid : Maybe String
     , coords : List GameCoordStore
     , nextPlayer : Maybe Bool
     }
@@ -30,13 +30,16 @@ save user game =
 
         conv ( ( x, y ), player ) =
             GameCoordStore x y (player == Cross)
+
+        uid =
+            Maybe.map .uid user
     in
         case game.state of
             Ongoing player ->
-                saveGame <| GameStore user coords (Just <| player == Cross)
+                saveGame <| GameStore uid coords (Just <| player == Cross)
 
             _ ->
-                saveGame <| GameStore user coords Nothing
+                saveGame <| GameStore uid coords Nothing
 
 
 subscribe : (Game -> msg) -> Sub msg

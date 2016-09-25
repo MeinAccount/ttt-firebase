@@ -3,7 +3,11 @@
     "private": {
       "$uid": {
         ".read": "$uid === auth.uid",
-        ".write": "$uid === auth.uid"
+        ".write": "$uid === auth.uid",
+
+        "uid": {
+          ".validate": "newData.val() === auth.uid"
+        }
       }
     }
   }
