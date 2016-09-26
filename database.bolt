@@ -1,0 +1,36 @@
+// PRIVATE GAMES
+path /private/{uid} is PrivateGame {
+  read() { isCurrent(uid) }
+  write() { isCurrent(uid) }
+}
+
+type PrivateGame {
+  coords: Coord[],
+  uid: CurrentUID,
+  nextPlayer: Boolean | Null
+}
+
+type Coord {
+  x: Number,
+  y: Number,
+  playerRaw: Boolean
+}
+
+type CurrentUID extends String {
+  validate() { this == auth.uid }
+}
+
+
+// USER DATA (name)
+path /user/{uid} is User {
+  read() { isCurrent(uid) }
+  write() { isCurrent(uid) }
+}
+
+type User {
+  name: String
+}
+
+
+// FUNCTIONS
+isCurrent(uid) { auth != null && auth.uid == uid }
