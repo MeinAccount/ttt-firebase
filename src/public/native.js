@@ -23,6 +23,7 @@ firebase.auth().onAuthStateChanged(function(user) {
   app.ports.currentUser.send(user);
 
   if (user !== null) {
+    // observe private game
     var gameRef = firebase.database().ref('private/'+user.uid);
     gameRef.on('value', function(snapshot) {
       var values = snapshot.val() || {};
@@ -31,6 +32,11 @@ firebase.auth().onAuthStateChanged(function(user) {
         coords: values.coords || [],
         nextPlayer: values.nextPlayer !== undefined ? values.nextPlayer : null
       });
+    });
+
+    // save display name
+    firebase.database().ref('user/'+user.uid).set({
+      name: user.displayName
     });
   }
 });
